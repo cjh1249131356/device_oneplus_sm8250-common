@@ -191,7 +191,6 @@ PRODUCT_PACKAGES += \
     init.adaptiveCharging.rc \
     init.class_main.sh \
     init.crda.sh \
-    init.cust.rc \
     init.mdm.sh \
     init.oem.debug.rc \
     init.oem.minidump.sdx55m.rc \
