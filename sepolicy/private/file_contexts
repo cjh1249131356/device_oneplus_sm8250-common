@@ -1,0 +1,2 @@
+# Data files
+/data/misc/havoc/client_package_name                u:object_r:havoc_data_file:s0
