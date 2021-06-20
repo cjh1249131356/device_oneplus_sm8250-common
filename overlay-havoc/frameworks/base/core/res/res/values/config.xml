@@ -72,4 +72,7 @@
          OnePlus 7 Pro. This HAL expects a different format for the data instead of the usual (ms)
          timing(the duration which the vibrator is expected to vibrate for). -->
     <bool name="config_hasOnePlusHapticMotor">true</bool>
+
+    <!-- If not zero, limits the internal screen recorder's framerate to the set value. -->
+    <integer name="config_screenRecorderMaxFramerate">60</integer>
 </resources>
