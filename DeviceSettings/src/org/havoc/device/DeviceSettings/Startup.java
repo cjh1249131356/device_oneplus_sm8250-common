@@ -41,7 +41,6 @@ public class Startup extends BroadcastReceiver {
             context.startService(new Intent(context, FPSInfoService.class));
        }
         org.havoc.device.DeviceSettings.doze.Utils.checkDozeService(context);
-        VibratorStrengthPreference.restore(context);
     }
 
     private void restore(String file, boolean enabled) {
