@@ -29,26 +29,13 @@ ro.vendor.build.display.full_id           u:object_r:vendor_rild_prop:s0
 ro.vendor.product.device.db               u:object_r:vendor_db_security_prop:s0
 ro.vendor.product.manufacturer.db         u:object_r:vendor_db_security_prop:s0
 vendor.calibration.fingerprint            u:object_r:vendor_fingerprint_prop:s0
-vendor.copy.opdiagnose.data               u:object_r:vendor_shell_prop:s0
 vendor.nfc.                               u:object_r:vendor_nfc_prop:s0
 vendor.oem.rbr.log.clean                  u:object_r:vendor_default_prop:s0
 vendor.oem.wifi.socket.quit               u:object_r:vendor_set_wlan_prop:s0
 vendor.service.wifi.socket.enable         u:object_r:vendor_oem_wifi_prop:s0
 vendor.service.wifi.socket.mdm.enable     u:object_r:vendor_oem_wifi_prop:s0
-vendor.sys.memplus.postboot               u:object_r:vendor_memplus_prop:s0
 vendor.wlan.driver.status                 u:object_r:vendor_set_wlan_prop:s0
-vendor.wlan.ftm.daemon                    u:object_r:vendor_set_wlan_prop:s0
-vendor.wlan.ftm.up                        u:object_r:vendor_set_wlan_prop:s0
 vendor.wlan.hotspot.forceChannel          u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.bandwidth             u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.channel               u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.dump                  u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.enabled               u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.file                  u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.iface                 u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.output_dir            u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.status                u:object_r:vendor_oem_wifi_prop:s0
-vendor.wlan.sniffer.vendor_dir            u:object_r:vendor_oem_wifi_prop:s0
 vendor.wlan.write.con_mode                u:object_r:vendor_set_wlan_prop:s0
 
 # Camera

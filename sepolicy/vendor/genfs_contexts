@@ -15,14 +15,9 @@ genfscon proc /touchpanel                           u:object_r:proc_touchpanel:s
 genfscon proc /warp_chg_exit                        u:object_r:sysfs_dash_charger:s0
 genfscon proc /wireless/charge_pump_en              u:object_r:procfs_oem_wireless:s0
 genfscon proc /wireless/current_out                 u:object_r:procfs_oem_wireless:s0
-genfscon proc /wireless/deviated                    u:object_r:procfs_oem_wireless:s0
 genfscon proc /wireless/enable_rx                   u:object_r:procfs_oem_wireless:s0
 genfscon proc /wireless/enable_tx                   u:object_r:procfs_oem_wireless:s0
 genfscon proc /wireless/epp_or_bpp                  u:object_r:procfs_oem_wireless:s0
-genfscon proc /wireless/fast_skin_threld            u:object_r:procfs_oem_wireless:s0
-genfscon proc /wireless/ftm_mode                    u:object_r:procfs_oem_wireless:s0
-genfscon proc /wireless/ftm_test                    u:object_r:procfs_oem_wireless:s0
-genfscon proc /wireless/quiet_mode                  u:object_r:procfs_oem_wireless:s0
 genfscon proc /wireless/rx_voltage                  u:object_r:procfs_oem_wireless:s0
 
 # sysfs
@@ -35,7 +30,6 @@ genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1
 genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/native_display_srgb_color_mode        u:object_r:sysfs_color:s0
 genfscon sysfs /devices/platform/soc/soc:oneplus_wlchg/power_supply/wireless                                           u:object_r:vendor_sysfs_battery_supply:s0
 genfscon sysfs /devices/platform/soc/soc:tri_state_key/hall_data_calib                                                 u:object_r:sysfs_tri_state_key:s0
-genfscon sysfs /module/memplus_core/parameters                                                                         u:object_r:sysfs_memplus:s0
 genfscon sysfs /module/qpnp_smb5/parameters/call_on                                                                    u:object_r:sysfs_dash_charger:s0
 genfscon sysfs /module/qpnp_smb5/parameters/video_call_on                                                              u:object_r:vendor_sysfs_video_call_on:s0
 genfscon sysfs /module/stmvl53l1                                                                                       u:object_r:sysfs_vl53l1:s0

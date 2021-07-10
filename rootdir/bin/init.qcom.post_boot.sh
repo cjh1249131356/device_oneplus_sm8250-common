@@ -590,109 +590,6 @@ function configure_zram_parameters() {
     fi
 }
 
-function configure_read_ahead_kb_values() {
-    MemTotalStr=`cat /proc/meminfo | grep MemTotal`
-    MemTotal=${MemTotalStr:16:8}
-
-    dmpts=$(ls /sys/block/*/queue/read_ahead_kb | grep -e dm -e mmc)
-
-    # Set 128 for <= 3GB &
-    # set 512 for >= 4GB targets.
-    if [ $MemTotal -le 3145728 ]; then
-        echo 128 > /sys/block/mmcblk0/bdi/read_ahead_kb
-        echo 128 > /sys/block/mmcblk0rpmb/bdi/read_ahead_kb
-        for dm in $dmpts; do
-            echo 128 > $dm
-        done
-    else
-        echo 512 > /sys/block/mmcblk0/bdi/read_ahead_kb
-        echo 512 > /sys/block/mmcblk0rpmb/bdi/read_ahead_kb
-        for dm in $dmpts; do
-            echo 512 > $dm
-        done
-    fi
-}
-
-function disable_core_ctl() {
-    if [ -f /sys/devices/system/cpu/cpu0/core_ctl/enable ]; then
-        echo 0 > /sys/devices/system/cpu/cpu0/core_ctl/enable
-    else
-        echo 1 > /sys/devices/system/cpu/cpu0/core_ctl/disable
-    fi
-}
-
-function enable_swap() {
-    MemTotalStr=`cat /proc/meminfo | grep MemTotal`
-    MemTotal=${MemTotalStr:16:8}
-
-    SWAP_ENABLE_THRESHOLD=1048576
-    swap_enable=`getprop ro.vendor.qti.config.swap`
-
-    # Enable swap initially only for 1 GB targets
-    if [ "$MemTotal" -le "$SWAP_ENABLE_THRESHOLD" ] && [ "$swap_enable" == "true" ]; then
-        # Static swiftness
-        echo 1 > /proc/sys/vm/swap_ratio_enable
-        echo 70 > /proc/sys/vm/swap_ratio
-
-        # Swap disk - 200MB size
-        if [ ! -f /data/vendor/swap/swapfile ]; then
-            dd if=/dev/zero of=/data/vendor/swap/swapfile bs=1m count=200
-        fi
-        mkswap /data/vendor/swap/swapfile
-        swapon /data/vendor/swap/swapfile -p 32758
-    fi
-}
-
-# bin.zhong@ASTI, 2019/10/12, add for memplus
-function configure_memplus_parameters() {
-    bootmode=`getprop ro.vendor.factory.mode`
-    if [ "$bootmode" == "ftm" ] || [ "$bootmode" == "wlan" ] || [ "$bootmode" == "rf" ];then
-        return
-    fi
-    if [ ! $memplus_post_config ];then
-        return
-    fi
-    setprop vendor.sys.memplus.postboot 1
-    memplus=`getprop persist.vendor.memplus.enable`
-    case "$memplus" in
-        "0")
-            # diable swapspace
-            rm /data/vendor/swap/swapfile
-            swapoff /dev/block/zram0
-            ;;
-        "1")
-            # enable memplus
-            rm /data/vendor/swap/swapfile
-            # reset zram swapspace
-            swapoff /dev/block/zram0
-            echo 1 > /sys/block/zram0/reset
-            echo 2202009600 > /sys/block/zram0/disksize
-            echo 0 > /sys/block/zram0/mem_limit
-            mkswap /dev/block/zram0
-            swapon /dev/block/zram0 -p 32758
-            if [ $? -eq 0 ]; then
-                echo 1 > /sys/module/memplus_core/parameters/memory_plus_enabled
-            fi
-            ;;
-        *)
-            #enable kswapd
-            rm /data/vendor/swap/swapfile
-            # reset zram swapspace
-            swapoff /dev/block/zram0
-            echo 1 > /sys/block/zram0/reset
-            echo lz4 > /sys/block/zram0/comp_algorithm
-            echo 2202009600 > /sys/block/zram0/disksize
-            echo 0 > /sys/block/zram0/mem_limit
-            mkswap /dev/block/zram0
-            swapon /dev/block/zram0 -p 32758
-            if [ $? -eq 0 ]; then
-                echo 0 > /sys/module/memplus_core/parameters/memory_plus_enabled
-            fi
-            ;;
-    esac
-    setprop vendor.sys.memplus.postboot 2
-}
-
 function configure_memory_parameters() {
     # Set Memory parameters.
     #
@@ -718,8 +615,6 @@ low_ram=`getprop ro.config.low_ram`
 
 if [ "$ProductName" == "msmnile" ] || [ "$ProductName" == "kona" ] ; then
       # Enable ZRAM
-      configure_zram_parameters
-      configure_read_ahead_kb_values
       echo 0 > /proc/sys/vm/page-cluster
       echo 100 > /proc/sys/vm/swappiness
 else
@@ -828,12 +723,6 @@ else
 
     # set min_free_kbytes = 32MB
     echo 32768 > /proc/sys/vm/min_free_kbytes
-
-    configure_zram_parameters
-
-    configure_read_ahead_kb_values
-
-    enable_swap
 fi
 }
 
@@ -5153,12 +5042,7 @@ case "$target" in
         setprop vendor.dcvs.prop 0
 	setprop vendor.dcvs.prop 1
     echo N > /sys/module/lpm_levels/parameters/sleep_disabled
-    # Enable fsc.
-    echo 1 > /sys/module/fsc/parameters/enable
     configure_memory_parameters
-
-    # bin.zhong@ASTI, 2019/10/12, add for memplus
-    memplus_post_config=1
     ;;
 esac
 
@@ -5565,5 +5449,3 @@ esac
 misc_link=$(ls -l /dev/block/bootdevice/by-name/misc)
 real_path=${misc_link##*>}
 setprop persist.vendor.mmi.misc_dev_path $real_path
-# bin.zhong@ASTI, 2019/10/12, add for memplus
-configure_memplus_parameters
