@@ -1,6 +1,7 @@
 # files
 type oem_file, file_type;
 type opf_file, file_type;
+type public_adsprpcd_file, file_type;
 
 # procfs
 type proc_touchpanel, fs_type, proc_type;
